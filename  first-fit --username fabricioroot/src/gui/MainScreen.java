@@ -439,7 +439,7 @@ public class MainScreen extends javax.swing.JApplet {
 
     private void jButtonStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonStartActionPerformed
         this.mainMemory = this.memoryGenerator.createsRandomMemory(MEMORY_SIZE, FREE_SPACES_IN_THE_MEMORY);
-        this.finalMainMemory = memoryGenerator.clusterFreeCells(mainMemory);
+        this.finalMainMemory = this.memoryGenerator.clusterFreeCells(mainMemory);
 
         for(int i = 0; i <= (this.finalMainMemory.size() - 1); i++) {
             if(!this.finalMainMemory.elementAt(i).isIsFree()){
@@ -456,7 +456,7 @@ public class MainScreen extends javax.swing.JApplet {
                 "                                2) Foi gerada aleatoriamente uma memória para ser usada na simulação;\n" +
                 "                                3) Inicialmente a memória contém " + this.memoryGenerator.counterOfFreeSpaces(this.finalMainMemory) + " células livres; \n" +                    
                 "                                4) Os processos recebem tempos de vida aleatórios;\n" +
-                "                                5) A cada inserção de processo na memória principal, os tempos de vida dos processos da memória principal são reduzidos em uma unidade;\n" +
+                "                                5) A cada inserção os tempos de vida dos processos da memória principal são reduzidos em uma unidade;\n" +
                 "                                6) Antes de ir para a memória principal o processo passa pela fila de entrada de processos;\n" +
                 "                                7) Passe o cursor do mouse sobre os processos na memória principal (Blocos Vermelhos) para ver seus tempos de vida;\n" +
                 "                                8) Passe o cursor do mouse sobre os processos na fila de entrada (Blocos Verdes) para ver seus tamanhos. ", "DICA", JOptionPane.INFORMATION_MESSAGE);
@@ -507,7 +507,7 @@ public class MainScreen extends javax.swing.JApplet {
         if(st != null) {
             this.finalMainMemory = st.getFinalMainMemory();
         }
-        st = new AlgorithmStepsThread(this, this.jButtonAlgorithmSteps, this.finalMainMemory, this.memoryGenerator, this.processesQueue, this.jPanelAnimation);
+        st = new AlgorithmStepsThread(this, this.jButtonAlgorithmSteps, this.finalMainMemory, this.processesQueue, this.jPanelAnimation);
         Thread t = new Thread(st);
         t.start();
 }//GEN-LAST:event_jButtonAlgorithmStepsActionPerformed
