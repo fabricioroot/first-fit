@@ -23,7 +23,7 @@ public class AlgorithmStepsThread implements Runnable {
 
     JButton jButtonAlgorithmSteps;
     Vector<MemoryCell> finalMainMemory;
-    MemoryGenerator memoryGenerator;
+    MemoryGenerator memoryGenerator = new MemoryGenerator();
     Vector<Process> processesQueue;
     JPanel jPanelAnimation;
     JLabel jLabelNextStep;
@@ -33,11 +33,10 @@ public class AlgorithmStepsThread implements Runnable {
     JButton jButtonOkNextStep;
     JLabel jLabelAtDialogNextStep;
     
-    public AlgorithmStepsThread(MainScreen mainScreen, JButton jButtonAlgorithmSteps, Vector<MemoryCell> finalMainMemory, MemoryGenerator memoryGenerator, Vector<Process> processesQueue, JPanel jPanelAnimation) {
+    public AlgorithmStepsThread(MainScreen mainScreen, JButton jButtonAlgorithmSteps, Vector<MemoryCell> finalMainMemory, Vector<Process> processesQueue, JPanel jPanelAnimation) {
         this.mainScreen = mainScreen ;
         this.jButtonAlgorithmSteps = jButtonAlgorithmSteps;
         this.finalMainMemory = finalMainMemory;
-        this.memoryGenerator = memoryGenerator;
         this.processesQueue = processesQueue;
         this.jPanelAnimation = jPanelAnimation;
     }
@@ -104,7 +103,8 @@ public class AlgorithmStepsThread implements Runnable {
         Vector<Integer> algorithmResult = algorithm.toExecute_A(this.finalMainMemory, process);
         
         if(algorithmResult != null) {
-        
+
+            Vector<MemoryCell> newMemory = algorithm.toExecute_B(this.finalMainMemory, process);
             int steps = 0; //This variable stores how many steps (blocks) the process (represented like one block) has "to jump"
             int orientationAxisY = 25;
 
@@ -202,9 +202,7 @@ public class AlgorithmStepsThread implements Runnable {
                     }
                 }
             }
-            this.finalMainMemory = algorithm.toExecute_B(this.finalMainMemory, process);
-            this.jPanelAnimation.removeAll();
-            this.jPanelAnimation.repaint();
+            this.finalMainMemory = newMemory;
             this.mainScreen.paintMainMemory(this.finalMainMemory);
             
             if(this.processesQueue.size() > 0) {
