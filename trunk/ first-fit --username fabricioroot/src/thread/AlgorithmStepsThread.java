@@ -29,57 +29,36 @@ public class AlgorithmStepsThread implements Runnable {
     JLabel jLabelNextStep;
     MainScreen mainScreen;
     boolean isJButtonOkClicked = false;
-    JDialog jDialogNextStep;
     JButton jButtonOkNextStep;
     JLabel jLabelAtDialogNextStep;
     
-    public AlgorithmStepsThread(MainScreen mainScreen, JButton jButtonAlgorithmSteps, Vector<MemoryCell> finalMainMemory, Vector<Process> processesQueue, JPanel jPanelAnimation) {
+    public AlgorithmStepsThread(MainScreen mainScreen, JButton jButtonAlgorithmSteps, Vector<MemoryCell> finalMainMemory, Vector<Process> processesQueue, JPanel jPanelAnimation, JButton jButtonOkNextStep) {
         this.mainScreen = mainScreen ;
         this.jButtonAlgorithmSteps = jButtonAlgorithmSteps;
         this.finalMainMemory = finalMainMemory;
         this.processesQueue = processesQueue;
         this.jPanelAnimation = jPanelAnimation;
+        this.jButtonOkNextStep = jButtonOkNextStep;
     }
     
     public Vector<MemoryCell> getFinalMainMemory() {
         return finalMainMemory;
     }
     
-    public JDialog getJDialogNextStep() {
-        return jDialogNextStep;
+    public JButton getJButtonOkNextStep() {
+        return jButtonOkNextStep;
     }
 
-    public void setJDialogNextStep(JDialog jDialogNextStep) {
-        this.jDialogNextStep = jDialogNextStep;
+    public void setJButtonOkNextStep(JButton jButtonOkNextStep) {
+        this.jButtonOkNextStep = jButtonOkNextStep;
     }
     
     public void run() {
-        this.jDialogNextStep = new JDialog();
-        this.jDialogNextStep.setModalityType(ModalityType.MODELESS);
-        this.jDialogNextStep.setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
-        //this.jDialogNextStep.setAlwaysOnTop(true);
-        this.jDialogNextStep.setResizable(false);
-        this.jDialogNextStep.setBounds(750, 520, 231, 118);
-        this.jDialogNextStep.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-        this.jDialogNextStep.setLayout(null);
-
-        this.jButtonOkNextStep = new JButton("OK");
-        this.jButtonOkNextStep.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        this.jButtonOkNextStep.setBorderPainted(true);
-        this.jButtonOkNextStep.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        this.jButtonOkNextStep.setBounds(80, 35, 60, 30);
-
         this.jButtonOkNextStep.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 isJButtonOkClicked = true;
             }
         });
-        
-        this.jLabelAtDialogNextStep = new JLabel("Clique em 'OK' para o próximo passo");
-        this.jLabelAtDialogNextStep.setBounds(5, 3, 500, 30);
-        
-        this.jDialogNextStep.add(this.jLabelAtDialogNextStep);
-        this.jDialogNextStep.add(this.jButtonOkNextStep);
 
         this.jButtonAlgorithmSteps.setEnabled(false);
         
@@ -92,9 +71,7 @@ public class AlgorithmStepsThread implements Runnable {
         process.setId(this.processesQueue.firstElement().getId());
         this.processesQueue.remove(0);
         this.mainScreen.paintProcessesQueue(this.processesQueue);
-        
-        this.jDialogNextStep.setTitle("INSERÇÃO DE P" + String.valueOf(process.getId()) + " ...");
-        
+
         FirstFitAlgorithm algorithm = new FirstFitAlgorithm();
         
         //Semantically this object 'algorithmResult' determines if the algorithm found a solution
@@ -124,7 +101,7 @@ public class AlgorithmStepsThread implements Runnable {
 
             int j = 0;
             if(steps <= 15) {
-                this.jDialogNextStep.setVisible(true);
+                this.jButtonOkNextStep.setVisible(true);
                 block.setBounds(20, orientationAxisY, 30, 30);
                 while (j <= (steps - 1)) {
                     if (this.isJButtonOkClicked) {
@@ -133,11 +110,11 @@ public class AlgorithmStepsThread implements Runnable {
                         block.setBounds(20+(j*35), orientationAxisY, 30, 30);
                     }
                 }
-                this.jDialogNextStep.setVisible(false);
+                this.jButtonOkNextStep.setVisible(false);
             }
             else {
                 if((steps > 15) && (steps <= 30)) {
-                    this.jDialogNextStep.setVisible(true);
+                    this.jButtonOkNextStep.setVisible(true);
 
                     // First row
                     block.setBounds(20, orientationAxisY, 30, 30);    
@@ -160,11 +137,11 @@ public class AlgorithmStepsThread implements Runnable {
                             block.setBounds(20+(j*35), (orientationAxisY + 60), 30, 30);
                         }
                     }
-                    this.jDialogNextStep.setVisible(false);
+                    this.jButtonOkNextStep.setVisible(false);
                 }
                 else {
                     if((steps > 30) && (steps <= 45)){
-                        this.jDialogNextStep.setVisible(true);
+                        this.jButtonOkNextStep.setVisible(true);
 
                         // First row
                         block.setBounds(20, orientationAxisY, 30, 30);
@@ -198,7 +175,7 @@ public class AlgorithmStepsThread implements Runnable {
                                 block.setBounds(20 + (j*35), (orientationAxisY + 120), 30, 30);
                             }
                         }
-                        this.jDialogNextStep.setVisible(false);
+                        this.jButtonOkNextStep.setVisible(false);
                     }
                 }
             }
